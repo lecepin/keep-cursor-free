@@ -7,5 +7,8 @@ Cursor 提示 `Too many free trial accounts used on this machine`，继续使用
 . ./keep-cursor-free.sh
 ```
 
+<img width="685" alt="image" src="https://github.com/user-attachments/assets/a065ee34-348d-4892-8d7a-10376329b851">
+
+
 > 仅 mac 系统。
 
