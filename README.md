@@ -11,5 +11,6 @@ Cursor 提示 `Too many free trial accounts used on this machine`，继续使用
 
 
 > 仅 mac 系统。
+> 
 > Windows `%APPDATA%\Cursor\User\globalStorage\`，同原理。
 
