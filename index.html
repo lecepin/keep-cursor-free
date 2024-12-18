@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cursor ID 更新工具</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #333;
+        text-align: center;
+      }
+
+      .section {
+        margin-bottom: 30px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 200px;
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: monospace;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      .copy-btn {
+        background-color: transparent;
+        color: #2196f3;
+        padding: 4px;
+        border: 1px solid #2196f3;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 0 0 0 8px;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        min-width: unset;
+      }
+
+      .copy-btn:hover {
+        background-color: #2196f3;
+        color: white;
+      }
+
+      .copy-btn i {
+        font-size: 14px;
+      }
+
+      .copy-success {
+        position: relative;
+      }
+
+      .copy-success::after {
+        content: "✓";
+        position: absolute;
+        right: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        color: #4caf50;
+        font-size: 14px;
+        opacity: 0;
+        transition: all 0.2s ease;
+      }
+
+      .copy-success.show::after {
+        opacity: 1;
+        right: -25px;
+      }
+
+      .generated-values {
+        margin-top: 20px;
+      }
+
+      .value-group {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #f8f8f8;
+        border-radius: 4px;
+      }
+
+      .value-label {
+        width: 150px;
+        font-weight: bold;
+      }
+
+      .value-content {
+        flex-grow: 1;
+        font-family: monospace;
+        word-break: break-all;
+        margin: 0 10px;
+      }
+
+      .file-location {
+        background-color: #f8f8f8;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 15px;
+      }
+
+      .location-item {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: white;
+        border-radius: 4px;
+        border: 1px solid #eee;
+      }
+
+      .os {
+        font-weight: bold;
+        color: #2196f3;
+        display: inline-block;
+        width: 80px;
+        vertical-align: top;
+      }
+
+      code {
+        background-color: #f1f1f1;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: monospace;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      small {
+        color: #666;
+        display: block;
+        margin-top: 5px;
+        margin-left: 80px;
+        line-height: 1.8;
+      }
+
+      small .command-line:first-child {
+        margin-top: 0;
+      }
+
+      small .command-line:last-child {
+        margin-bottom: 0;
+      }
+
+      .command-line {
+        display: flex;
+        align-items: center;
+        margin: 3px 0;
+        line-height: 24px;
+      }
+
+      .command-text {
+        margin-right: 8px;
+        padding-top: 2px;
+      }
+
+      .command-text code {
+        vertical-align: middle;
+      }
+
+      p {
+        margin-top: 0;
+      }
+
+      .github-link {
+        color: #333;
+        font-size: inherit;
+        transition: color 0.3s ease;
+        margin-left: 10px;
+        vertical-align: middle;
+      }
+
+      .github-link:hover {
+        color: #2196f3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+        <span style="vertical-align: middle">Cursor ID 更新工具</span>
+        <a
+          href="https://github.com/lecepin/keep-cursor-free"
+          class="github-link"
+          target="_blank"
+          title="查看 GitHub 项目"
+        >
+          <i class="fab fa-github"></i>
+        </a>
+      </h1>
+
+      <div class="section">
+        <h2>方法一：文件内容更新</h2>
+        <div class="file-location">
+          <p><strong>文件位置：</strong></p>
+          <div class="location-item">
+            <span class="os">Windows:</span>
+            <code id="win-path"
+              >%APPDATA%\Cursor\User\globalStorage\storage.json</code
+            >
+            <button class="copy-btn" onclick="copyToClipboard('win-path')">
+              <i class="fas fa-copy"></i>
+            </button>
+            <br />
+            <small>
+              <div class="command-line">
+                <span class="command-text"
+                  >方式1: 可在文件资源管理器地址栏输入
+                  <code>%APPDATA%</code></span
+                >
+                <button
+                  class="copy-btn"
+                  onclick="copyWithSuccess(this, '%APPDATA%')"
+                >
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+              <div class="command-line">
+                <span class="command-text"
+                  >方式2: 在命令提示符(CMD)中输入
+                  <code
+                    >explorer %APPDATA%\Cursor\User\globalStorage</code
+                  ></span
+                >
+                <button
+                  class="copy-btn"
+                  onclick="copyWithSuccess(this, 'explorer %APPDATA%\\Cursor\\User\\globalStorage')"
+                >
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+              <div class="command-line">
+                <span class="command-text"
+                  >方式3: 在 PowerShell 中输入
+                  <code
+                    >Invoke-Item $env:APPDATA\Cursor\User\globalStorage</code
+                  ></span
+                >
+                <button
+                  class="copy-btn"
+                  onclick="copyWithSuccess(this, 'Invoke-Item $env:APPDATA\\Cursor\\User\\globalStorage')"
+                >
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </small>
+          </div>
+          <div class="location-item">
+            <span class="os">macOS:</span>
+            <code id="mac-path"
+              >~/Library/Application\ Support/Cursor/User/globalStorage/storage.json</code
+            >
+            <button class="copy-btn" onclick="copyToClipboard('mac-path')">
+              <i class="fas fa-copy"></i>
+            </button>
+            <br />
+            <small>
+              <div class="command-line">
+                <span class="command-text"
+                  >在终端输入
+                  <code
+                    >open ~/Library/Application\
+                    Support/Cursor/User/globalStorage/</code
+                  ></span
+                >
+                <button
+                  class="copy-btn"
+                  onclick="copyWithSuccess(this, 'open ~/Library/Application\\ Support/Cursor/User/globalStorage/')"
+                >
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </small>
+          </div>
+        </div>
+        <textarea
+          id="jsonContent"
+          placeholder="请粘贴 storage.json 文件内容..."
+        ></textarea>
+        <button onclick="updateContent()">更新内容</button>
+      </div>
+
+      <div class="section">
+        <h2>方法二：生成新的 ID</h2>
+        <button onclick="generateNewIds()">生成新 ID</button>
+
+        <div class="generated-values">
+          <div class="value-group">
+            <span class="value-label">machineId:</span>
+            <span id="machineId" class="value-content"></span>
+            <button class="copy-btn" onclick="copyToClipboard('machineId')">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+
+          <div class="value-group">
+            <span class="value-label">devDeviceId:</span>
+            <span id="devDeviceId" class="value-content"></span>
+            <button class="copy-btn" onclick="copyToClipboard('devDeviceId')">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+
+          <div class="value-group">
+            <span class="value-label">macMachineId:</span>
+            <span id="macMachineId" class="value-content"></span>
+            <button class="copy-btn" onclick="copyToClipboard('macMachineId')">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function generateHex(length) {
+        const array = new Uint8Array(length / 2);
+        crypto.getRandomValues(array);
+        return Array.from(array, (byte) =>
+          byte.toString(16).padStart(2, "0")
+        ).join("");
+      }
+
+      function generateUUID() {
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+          /[xy]/g,
+          function (c) {
+            const r = (Math.random() * 16) | 0;
+            const v = c == "x" ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+          }
+        );
+      }
+
+      function generateNewIds() {
+        document.getElementById("machineId").textContent = generateHex(64);
+        document.getElementById("devDeviceId").textContent = generateUUID();
+        document.getElementById("macMachineId").textContent = generateHex(64);
+      }
+
+      function updateContent() {
+        const textarea = document.getElementById("jsonContent");
+        const content = textarea.value.trim();
+
+        if (!content) {
+          alert("请先粘贴 storage.json 文件内容！");
+          return;
+        }
+
+        const machineId = generateHex(64);
+        const devDeviceId = generateUUID();
+        const macMachineId = generateHex(64);
+
+        let updatedContent = content
+          .replace(
+            /"telemetry\.machineId"\s*:\s*"[^"]*"/,
+            `"telemetry.machineId": "${machineId}"`
+          )
+          .replace(
+            /"telemetry\.devDeviceId"\s*:\s*"[^"]*"/,
+            `"telemetry.devDeviceId": "${devDeviceId}"`
+          )
+          .replace(
+            /"telemetry\.macMachineId"\s*:\s*"[^"]*"/,
+            `"telemetry.macMachineId": "${macMachineId}"`
+          );
+
+        textarea.value = updatedContent;
+      }
+
+      async function copyToClipboard(elementId) {
+        const text = document.getElementById(elementId).textContent;
+        const button = document.querySelector(
+          `[onclick="copyToClipboard('${elementId}')"]`
+        );
+        try {
+          await navigator.clipboard.writeText(text);
+          button.classList.add("copy-success", "show");
+          setTimeout(() => {
+            button.classList.remove("show");
+            setTimeout(() => {
+              button.classList.remove("copy-success");
+            }, 300);
+          }, 2000);
+        } catch (err) {
+          alert("复制失败：" + err);
+        }
+      }
+
+      async function copyWithSuccess(button, text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          button.classList.add("copy-success", "show");
+          setTimeout(() => {
+            button.classList.remove("show");
+            setTimeout(() => {
+              button.classList.remove("copy-success");
+            }, 300);
+          }, 2000);
+        } catch (err) {
+          alert("复制失败：" + err);
+        }
+      }
+    </script>
+  </body>
+</html>
