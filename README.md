@@ -14,3 +14,10 @@ Cursor 提示 `Too many free trial accounts used on this machine`，继续使用
 > 
 > Windows `%APPDATA%\Cursor\User\globalStorage\`，同原理。
 
+---
+
+## Web
+
+https://keep-cursor-free.vercel.app/
+
+<img width="811" alt="image" src="https://github.com/user-attachments/assets/eaf5eddc-fabb-4f0e-9059-39f970cfccd1" />
